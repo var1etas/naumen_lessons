@@ -1,5 +1,8 @@
 package ru.naumen.collection.task1;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Дано:
  * <pre>
@@ -39,6 +42,8 @@ public class Task1
         FOOD_AND_DRINKS
     }
 
+    private Map<Long, Goods> tickets = new HashMap<>();
+
     /**
      * Получить товары по билету
      * <p>Сложность алгоритма O(1)</p>
@@ -47,7 +52,16 @@ public class Task1
      * <p>Достаточно их определить только для id, т.к. он уникален</p>
      */
     public Goods getGoods(Ticket ticket) {
-        // TODO реализовать
-        return null;
+        // O(1) обращение по индексу с помощью хэш кода, который для Long переопределен
+        return tickets.get(ticket.getId());
+    }
+
+    public static void main(String[] args) {
+        Task1 task1 = new Task1();
+        Ticket ticket1 = new Ticket(1,"Petya");
+        Ticket ticket2 = new Ticket(2,"Sasha");
+        task1.tickets.put(ticket1.getId(), Goods.DRINKS);
+        task1.tickets.put(ticket2.getId(), Goods.EMPTY);
+        System.out.println(task1.getGoods(ticket1));
     }
 }

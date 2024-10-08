@@ -2,9 +2,7 @@ package ru.naumen.collection.task4;
 
 import java.time.Duration;
 import java.time.Instant;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
 import java.util.function.Supplier;
 
 /**
@@ -105,7 +103,11 @@ public class Task4 {
             ConcurrentCalculationManager<T> calculationManager,
             Supplier<T> task) {
         executorService.submit(() -> {
-            calculationManager.addTask(task);
+            try {
+                calculationManager.addTask(task);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
         });
     }
 }
