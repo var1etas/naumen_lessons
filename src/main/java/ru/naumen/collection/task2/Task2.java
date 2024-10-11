@@ -1,7 +1,6 @@
 package ru.naumen.collection.task2;
 
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
 /**
  * Дано:
@@ -31,12 +30,39 @@ import java.util.List;
  */
 public class Task2
 {
+    public static void main(String[] args) {
+        List<User> firstList = new ArrayList<>();
+        List<User> secondList = new ArrayList<>();
+        User user1 = new User("Petya", "gmail", "password1".getBytes());
+        User user2 = new User("Petya", "gmail", "password2".getBytes());
+        User user3 = new User("Petya", "gmail", "password3".getBytes());
+        User user4 = new User("Petya", "gmail", "password1".getBytes());
+        firstList.add(user1);
+        firstList.add(user2);
+        secondList.add(user3);
+        secondList.add(user4);
+        System.out.println(findDuplicates(firstList, secondList));
+    }
 
     /**
      * Возвращает дубликаты пользователей, которые есть в обеих коллекциях
      */
     public static List<User> findDuplicates(Collection<User> collA, Collection<User> collB) {
-        // TODO реализовать метод
-        return null;
+        // ArrayList оптимален, т.к. обеспечивает вставку в конец за O(1), а большего нам и не надо
+        List<User> dublicatesList = new ArrayList<>();
+        // HashSet хранит только уникальные объекты, и гарантирует contains за O(1) (т.к. мы переопределили equals и hashcode),
+        // два этих свойства оптимизируют проверку на наличие дубликатов
+        // копия коллекции O(n)
+        Set<User> userSet = new HashSet<>(collA);
+        // O(n) - бежим по всей коллекции
+        for(User u : collB){
+            // contains - O(1) - т.к. обращение по хэш коду,
+            // а его вычисление мы переопределили в классе User
+            if(userSet.contains(u)){
+                // добавление в список O(1)
+                dublicatesList.add(u);
+            }
+        }
+        return dublicatesList;
     }
 }

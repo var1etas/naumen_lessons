@@ -8,5 +8,21 @@ package ru.naumen.collection.task1;
  */
 public class Ticket {
     private long id;
-    private String client;
+    private String name;
+
+    public long getId() {
+        return id;
+    }
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public Ticket(long id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
+    public Ticket() {
+        super();
+    }
 }
