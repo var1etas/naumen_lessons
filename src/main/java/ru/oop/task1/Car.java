@@ -1,12 +1,15 @@
 package ru.oop.task1;
 
 /**
- * Машина
+ * Легковой автомобиль
  */
-public interface Car {
+public class Car implements Transport {
 
     /**
-     * Везет переданного человека в указанное место
+     * Везет человека в указанное место
      */
-    void moveTo(Person person, Position position);
+    @Override
+    public void moveTo(Person person, Position position) {
+
+    }
 }
