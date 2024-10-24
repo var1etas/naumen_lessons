@@ -8,5 +8,5 @@ public interface Transport extends Positioned {
     /**
      * Везет человека в указанное место
      */
-    void moveTo(Position destination);
+    void moveTo(Position destination, Person person);
 }

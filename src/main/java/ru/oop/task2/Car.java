@@ -16,7 +16,7 @@ public class Car implements Transport {
      * Везет человека в указанное место
      */
     @Override
-    public void moveTo(Position destination) {
+    public void moveTo(Position destination, Person person) {
 
     }
 
