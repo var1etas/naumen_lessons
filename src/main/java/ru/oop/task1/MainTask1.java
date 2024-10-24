@@ -21,7 +21,7 @@ public class MainTask1 {
      * Переехать из текущего места в заданную точку
      */
     public void moveTo(Person person, Position destination) {
-        Transport car = new Car();
+        Car car = new Car();
         car.moveTo(person, destination);
         person.walk(destination);
 
