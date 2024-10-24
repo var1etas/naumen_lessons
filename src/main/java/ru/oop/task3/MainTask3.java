@@ -29,12 +29,11 @@ public class MainTask3 {
      */
     public void moveTo(Person person, Position destination) {
         List<Transport> transports = List.of(new Car(person), new Bus(person, "43"), new Bus(person, "50"));
-        for (int i = 0; i < transports.size() - 1; i++) {
+        for (int i = 0; i < transports.size() && person.getPosition() != destination; i++) {
             person.walk(transports.get(i).getPosition());
-            transports.get(i).moveTo(transports.get(i + 1).getPosition());
+            transports.get(i).moveTo(destination);
+            person.walk(destination);
         }
-        person.walk(transports.getLast().getPosition());
-        transports.getLast().moveTo(destination);
         person.walk(destination);
     }
 }
