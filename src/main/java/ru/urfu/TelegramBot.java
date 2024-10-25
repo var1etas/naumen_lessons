@@ -11,13 +11,16 @@ import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
 /**
  * Телеграм бот
  */
-public class TelegramBot extends TelegramLongPollingBot {
+public class TelegramBot extends TelegramLongPollingBot implements Bot {
+    EchoBot echoBot;
 
     private final String telegramBotName;
+    private String lastMessage;
 
-    public TelegramBot(String telegramBotName, String token) {
+    public TelegramBot(String telegramBotName, String token, EchoBot echoBot) {
         super(token);
         this.telegramBotName = telegramBotName;
+        this.echoBot = echoBot;
     }
 
     public void start() {
@@ -36,7 +39,7 @@ public class TelegramBot extends TelegramLongPollingBot {
             Message updateMessage = update.getMessage();
             Long chatId = updateMessage.getChatId();
             String messageFromUser = updateMessage.getText();
-            // TODO обработайте сообщение от пользователя (messageFromUser)
+            echoBot.sendEchoMessage(String.valueOf(chatId), messageFromUser, this);
         }
     }
 
@@ -45,6 +48,7 @@ public class TelegramBot extends TelegramLongPollingBot {
      * @param chatId идентификатор чата
      * @param message текст сообщения
      */
+    @Override
     public void sendMessage(String chatId, String message) {
         SendMessage sendMessage = new SendMessage();
         sendMessage.setChatId(chatId);
@@ -56,6 +60,7 @@ public class TelegramBot extends TelegramLongPollingBot {
             System.err.println("Не удалось отправить сообщение. " + e.getMessage());
         }
     }
+
 
     @Override
     public String getBotUsername() {
