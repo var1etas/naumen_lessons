@@ -15,16 +15,11 @@
 
         <telegrambots.version>6.9.7.1</telegrambots.version>
         <discord4j.version>3.2.6</discord4j.version>
-
-        <reactor.netty.http>1.1.23</reactor.netty.http>
-        <netty.codec.http2>4.1.114.Final</netty.codec.http2>
-        <reactor.netty.core>1.1.23</reactor.netty.core>
-        <netty.handler>4.1.114.Final</netty.handler>
-        <netty.codec.http>4.1.114.Final</netty.codec.http>
-        <jackson.databind>2.18.0</jackson.databind>
-        <commons.codec>1.17.1</commons.codec>
         <junit.jupiter>5.11.2</junit.jupiter>
-        <mockito.core>5.14.2</mockito.core>
+
+        <netty.codec.http2>4.1.114.Final</netty.codec.http2>
+        <reactor.netty.http>1.1.23</reactor.netty.http>
+        <jackson.databind>2.18.0</jackson.databind>
     </properties>
 
     <dependencies>
@@ -61,9 +56,8 @@
                 <groupId>org.junit.jupiter</groupId>
                 <artifactId>junit-jupiter</artifactId>
                 <version>${junit.jupiter}</version>
+                <scope>test</scope>
             </dependency>
-
-
 
             <dependency>
                 <groupId>io.projectreactor.netty</groupId>
@@ -76,30 +70,11 @@
                 <version>${netty.codec.http2}</version>
             </dependency>
             <dependency>
-                <groupId>io.projectreactor.netty</groupId>
-                <artifactId>reactor-netty-core</artifactId>
-                <version>${reactor.netty.core}</version>
-            </dependency>
-            <dependency>
-                <groupId>io.netty</groupId>
-                <artifactId>netty-handler</artifactId>
-                <version>${netty.handler}</version>
-            </dependency>
-            <dependency>
-                <groupId>io.netty</groupId>
-                <artifactId>netty-codec-http</artifactId>
-                <version>${netty.codec.http}</version>
-            </dependency>
-            <dependency>
                 <groupId>com.fasterxml.jackson.core</groupId>
                 <artifactId>jackson-databind</artifactId>
                 <version>${jackson.databind}</version>
             </dependency>
-            <dependency>
-                <groupId>commons-codec</groupId>
-                <artifactId>commons-codec</artifactId>
-                <version>${commons.codec}</version>
-            </dependency>
+
         </dependencies>
     </dependencyManagement>
 
