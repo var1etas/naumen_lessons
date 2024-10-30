@@ -23,6 +23,8 @@
         <netty.codec.http>4.1.114.Final</netty.codec.http>
         <jackson.databind>2.18.0</jackson.databind>
         <commons.codec>1.17.1</commons.codec>
+        <junit.jupiter>5.11.2</junit.jupiter>
+        <mockito.core>5.14.2</mockito.core>
     </properties>
 
     <dependencies>
@@ -35,6 +37,12 @@
             <groupId>com.discord4j</groupId>
             <artifactId>discord4j-core</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+        </dependency>
+
     </dependencies>
 
     <dependencyManagement>
@@ -49,6 +57,13 @@
                 <artifactId>discord4j-core</artifactId>
                 <version>${discord4j.version}</version>
             </dependency>
+            <dependency>
+                <groupId>org.junit.jupiter</groupId>
+                <artifactId>junit-jupiter</artifactId>
+                <version>${junit.jupiter}</version>
+            </dependency>
+
+
 
             <dependency>
                 <groupId>io.projectreactor.netty</groupId>

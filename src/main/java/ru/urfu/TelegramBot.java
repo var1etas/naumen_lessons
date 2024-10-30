@@ -12,17 +12,24 @@ import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
  * Телеграм бот
  */
 public class TelegramBot extends TelegramLongPollingBot implements Bot {
-    EchoBot echoBot;
+    private final EchoMessenger echoMessenger;
 
     private final String telegramBotName;
-    private String lastMessage;
 
-    public TelegramBot(String telegramBotName, String token, EchoBot echoBot) {
+    /**
+     * Конструктор телеграм бота, для создания экземпляра требуется передать имя бота, токен
+     * и сервис для обработки и отправки эхо-сообщений
+     */
+    public TelegramBot(String telegramBotName, String token, EchoMessenger echoMessenger) {
         super(token);
         this.telegramBotName = telegramBotName;
-        this.echoBot = echoBot;
+        this.echoMessenger = echoMessenger;
     }
 
+    /**
+     * Метод для запуска бота
+     * @throws RuntimeException если запуск не удался
+     */
     public void start() {
         try {
             TelegramBotsApi botsApi = new TelegramBotsApi(DefaultBotSession.class);
@@ -33,18 +40,21 @@ public class TelegramBot extends TelegramLongPollingBot implements Bot {
         }
     }
 
+    /**
+     * Обработчик входящих сообщений
+     */
     @Override
     public void onUpdateReceived(Update update) {
         if (update.hasMessage() && update.getMessage().hasText()) {
             Message updateMessage = update.getMessage();
             Long chatId = updateMessage.getChatId();
             String messageFromUser = updateMessage.getText();
-            echoBot.sendEchoMessage(String.valueOf(chatId), messageFromUser, this);
+            echoMessenger.sendEchoMessage(String.valueOf(chatId), messageFromUser, this);
         }
     }
 
     /**
-     * Отправить сообщение
+     * Отправить сообщение заданному получателю
      * @param chatId идентификатор чата
      * @param message текст сообщения
      */
@@ -61,7 +71,9 @@ public class TelegramBot extends TelegramLongPollingBot implements Bot {
         }
     }
 
-
+    /**
+     * Возвращает имя бота
+     */
     @Override
     public String getBotUsername() {
         return telegramBotName;
