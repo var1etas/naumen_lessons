@@ -20,6 +20,7 @@
         <netty.codec.http2.version>4.1.114.Final</netty.codec.http2.version>
         <reactor.netty.http.version>1.1.23</reactor.netty.http.version>
         <jackson.databind.version>2.18.0</jackson.databind.version>
+        <commons.codec.version>1.17.1</commons.codec.version>
     </properties>
 
     <dependencies>
@@ -64,9 +65,9 @@
                 <version>${reactor.netty.http.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.fasterxml.jackson.core</groupId>
-                <artifactId>jackson-databind</artifactId>
-                <version>${jackson.databind.version}</version>
+                <groupId>commons-codec</groupId>
+                <artifactId>commons-codec</artifactId>
+                <version>${commons.codec.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
