@@ -17,7 +17,6 @@
         <discord4j.version>3.2.6</discord4j.version>
         <junit.jupiter.version>5.11.2</junit.jupiter.version>
 
-        <netty.codec.http2.version>4.1.114.Final</netty.codec.http2.version>
         <reactor.netty.http.version>1.1.23</reactor.netty.http.version>
         <commons.codec.version>1.17.1</commons.codec.version>
     </properties>
