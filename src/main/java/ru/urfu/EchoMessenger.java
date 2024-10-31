@@ -14,7 +14,7 @@ public class EchoMessenger {
     /**
      * Обработка эхо-сообщения
      */
-    public String getEchoMessage(String message) {
+    private String getEchoMessage(String message) {
         return String.format("Ваше сообщение: '%s'", message);//"Ваше сообщение: " + message;
     }
 }

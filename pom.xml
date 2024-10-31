@@ -15,11 +15,11 @@
 
         <telegrambots.version>6.9.7.1</telegrambots.version>
         <discord4j.version>3.2.6</discord4j.version>
-        <junit.jupiter>5.11.2</junit.jupiter>
+        <junit.jupiter.version>5.11.2</junit.jupiter.version>
 
-        <netty.codec.http2>4.1.114.Final</netty.codec.http2>
-        <reactor.netty.http>1.1.23</reactor.netty.http>
-        <jackson.databind>2.18.0</jackson.databind>
+        <netty.codec.http2.version>4.1.114.Final</netty.codec.http2.version>
+        <reactor.netty.http.version>1.1.23</reactor.netty.http.version>
+        <jackson.databind.version>2.18.0</jackson.databind.version>
     </properties>
 
     <dependencies>
@@ -37,7 +37,6 @@
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter</artifactId>
         </dependency>
-
     </dependencies>
 
     <dependencyManagement>
@@ -55,26 +54,20 @@
             <dependency>
                 <groupId>org.junit.jupiter</groupId>
                 <artifactId>junit-jupiter</artifactId>
-                <version>${junit.jupiter}</version>
+                <version>${junit.jupiter.version}</version>
                 <scope>test</scope>
             </dependency>
 
             <dependency>
                 <groupId>io.projectreactor.netty</groupId>
                 <artifactId>reactor-netty-http</artifactId>
-                <version>${reactor.netty.http}</version>
-            </dependency>
-            <dependency>
-                <groupId>io.netty</groupId>
-                <artifactId>netty-codec-http2</artifactId>
-                <version>${netty.codec.http2}</version>
+                <version>${reactor.netty.http.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.fasterxml.jackson.core</groupId>
                 <artifactId>jackson-databind</artifactId>
-                <version>${jackson.databind}</version>
+                <version>${jackson.databind.version}</version>
             </dependency>
-
         </dependencies>
     </dependencyManagement>
 
