@@ -11,8 +11,8 @@ import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
 /**
  * Телеграм бот
  */
-public class TelegramBot extends TelegramLongPollingBot implements Bot {
-    private final EchoMessenger echoMessenger;
+public class TelegramBot extends TelegramLongPollingBot {
+    private final MessageHandler messageHandler;
 
     private final String telegramBotName;
 
@@ -20,10 +20,10 @@ public class TelegramBot extends TelegramLongPollingBot implements Bot {
      * Конструктор телеграм бота, для создания экземпляра требуется передать имя бота, токен
      * и сервис для обработки и отправки эхо-сообщений
      */
-    public TelegramBot(String telegramBotName, String token, EchoMessenger echoMessenger) {
+    public TelegramBot(String telegramBotName, String token, MessageHandler messageHandler) {
         super(token);
         this.telegramBotName = telegramBotName;
-        this.echoMessenger = echoMessenger;
+        this.messageHandler = messageHandler;
     }
 
     /**
@@ -49,7 +49,7 @@ public class TelegramBot extends TelegramLongPollingBot implements Bot {
             Message updateMessage = update.getMessage();
             Long chatId = updateMessage.getChatId();
             String messageFromUser = updateMessage.getText();
-            echoMessenger.sendEchoMessage(String.valueOf(chatId), messageFromUser, this);
+            sendMessage(String.valueOf(chatId), messageHandler.convertMessageToEcho(messageFromUser));
         }
     }
 
@@ -58,7 +58,6 @@ public class TelegramBot extends TelegramLongPollingBot implements Bot {
      * @param chatId идентификатор чата
      * @param message текст сообщения
      */
-    @Override
     public void sendMessage(String chatId, String message) {
         SendMessage sendMessage = new SendMessage();
         sendMessage.setChatId(chatId);

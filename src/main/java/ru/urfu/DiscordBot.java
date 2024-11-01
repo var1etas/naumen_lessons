@@ -10,22 +10,22 @@ import discord4j.core.object.entity.channel.MessageChannel;
 /**
  * Дискорд бот
  */
-public class DiscordBot implements Bot{
+public class DiscordBot {
     private final String token;
-    private final EchoMessenger echoMessenger;
+    private final MessageHandler messageHandler;
     private GatewayDiscordClient client;
 
     /**
      * Конструктор дискорд бота, для создания экземпляра требуется передать токен
      * и сервис для обработки и отправки эхо-сообщений
      */
-    public DiscordBot(String token, EchoMessenger echoMessenger) {
+    public DiscordBot(String token, MessageHandler messageHandler) {
         this.token = token;
-        this.echoMessenger = echoMessenger;
+        this.messageHandler = messageHandler;
     }
 
     /**
-     * Метод для запуска бота и обработки входящих сообщений
+     * Метод для запуска бота и настройки обработки входящих сообщений
      * @throws RuntimeException если возникла ошибка при входе в дискорд или в работе бота
      */
     public void start() {
@@ -42,7 +42,7 @@ public class DiscordBot implements Bot{
                     if (eventMessage.getAuthor().map(user -> !user.isBot()).orElse(false)) {
                         String chatId = eventMessage.getChannelId().asString();
                         String messageFromUser = eventMessage.getContent();
-                        echoMessenger.sendEchoMessage(messageFromUser, chatId, this);
+                        sendMessage(chatId, messageHandler.convertMessageToEcho(messageFromUser));
                     }
                 });
         System.out.println("Discord бот запущен");
@@ -54,7 +54,6 @@ public class DiscordBot implements Bot{
      * @param chatId идентификатор чата
      * @param message текст сообщения
      */
-    @Override
     public void sendMessage(String chatId, String message) {
         Snowflake channelId = Snowflake.of(chatId);
         MessageChannel channel = client.getChannelById(channelId).ofType(MessageChannel.class).block();
