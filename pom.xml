@@ -15,10 +15,10 @@
 
         <telegrambots.version>6.9.7.1</telegrambots.version>
         <discord4j.version>3.2.6</discord4j.version>
-        <junit.jupiter.version>5.11.2</junit.jupiter.version>
+        <junit-jupiter.version>5.11.2</junit-jupiter.version>
 
-        <reactor.netty.http.version>1.1.23</reactor.netty.http.version>
-        <commons.codec.version>1.17.1</commons.codec.version>
+        <reactor-netty-http.version>1.1.23</reactor-netty-http.version>
+        <commons-codec.version>1.17.1</commons-codec.version>
     </properties>
 
     <dependencies>
@@ -53,19 +53,19 @@
             <dependency>
                 <groupId>org.junit.jupiter</groupId>
                 <artifactId>junit-jupiter</artifactId>
-                <version>${junit.jupiter.version}</version>
+                <version>${junit-jupiter.version}</version>
                 <scope>test</scope>
             </dependency>
 
             <dependency>
                 <groupId>io.projectreactor.netty</groupId>
                 <artifactId>reactor-netty-http</artifactId>
-                <version>${reactor.netty.http.version}</version>
+                <version>${reactor-netty-http.version}</version>
             </dependency>
             <dependency>
                 <groupId>commons-codec</groupId>
                 <artifactId>commons-codec</artifactId>
-                <version>${commons.codec.version}</version>
+                <version>${commons-codec.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
