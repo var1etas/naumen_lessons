@@ -24,7 +24,7 @@ public class MessageHandlerTests {
     public void processEchoMessageTest(){
         String message = "привет";
         String acceptMessage = messageHandler.convertMessageToEcho(message);
-        String expectedMessage = String.format("Ваше сообщение: '%s'", message);
+        String expectedMessage = "Ваше сообщение: 'привет'";
 
         Assertions.assertEquals(expectedMessage, acceptMessage);
     }

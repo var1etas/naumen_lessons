@@ -13,7 +13,6 @@ import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
  */
 public class TelegramBot extends TelegramLongPollingBot {
     private final MessageHandler messageHandler;
-
     private final String telegramBotName;
 
     /**
@@ -40,9 +39,6 @@ public class TelegramBot extends TelegramLongPollingBot {
         }
     }
 
-    /**
-     * Обработчик входящих сообщений
-     */
     @Override
     public void onUpdateReceived(Update update) {
         if (update.hasMessage() && update.getMessage().hasText()) {
@@ -70,9 +66,6 @@ public class TelegramBot extends TelegramLongPollingBot {
         }
     }
 
-    /**
-     * Возвращает имя бота
-     */
     @Override
     public String getBotUsername() {
         return telegramBotName;
