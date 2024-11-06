@@ -12,14 +12,23 @@ import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
  * Телеграм бот
  */
 public class TelegramBot extends TelegramLongPollingBot {
-
+    private final MessageHandler messageHandler;
     private final String telegramBotName;
 
-    public TelegramBot(String telegramBotName, String token) {
+    /**
+     * Конструктор телеграм бота, для создания экземпляра требуется передать имя бота, токен
+     * и сервис для обработки и отправки эхо-сообщений
+     */
+    public TelegramBot(String telegramBotName, String token, MessageHandler messageHandler) {
         super(token);
         this.telegramBotName = telegramBotName;
+        this.messageHandler = messageHandler;
     }
 
+    /**
+     * Метод для запуска бота
+     * @throws RuntimeException если запуск не удался
+     */
     public void start() {
         try {
             TelegramBotsApi botsApi = new TelegramBotsApi(DefaultBotSession.class);
@@ -36,12 +45,12 @@ public class TelegramBot extends TelegramLongPollingBot {
             Message updateMessage = update.getMessage();
             Long chatId = updateMessage.getChatId();
             String messageFromUser = updateMessage.getText();
-            // TODO обработайте сообщение от пользователя (messageFromUser)
+            sendMessage(String.valueOf(chatId), messageHandler.convertMessageToEcho(messageFromUser));
         }
     }
 
     /**
-     * Отправить сообщение
+     * Отправить сообщение заданному получателю
      * @param chatId идентификатор чата
      * @param message текст сообщения
      */
