@@ -8,16 +8,6 @@ import org.junit.jupiter.api.Test;
  * Тесты логики бота в классе BotLogic
  */
 public class BotLogicTests {
-    private final String HELP_INFO = """
-            Бот для обучения. Ты можешь проходить здесь тесты и проверять свой скилл.
-            Просто используй:
-            /start - для запуска бота
-            /help - если тебе вдруг что-то стало непонятно
-            /test - для запуска теста
-            /stop - для завершения работы в режиме теста
-            /notify - отправить уведомление с текстом <text> через <seconds> секунд
-            /repeat - повторно задать вопросы, на которые был дан неправильный ответ (как только дан правильный ответ, вопрос удаляется списка на повторение)""";
-
     private TestBot bot;
     private BotLogic botLogic;
     private User user;
@@ -46,6 +36,16 @@ public class BotLogicTests {
     @Test
     public void testCommand_Help() {
         bot.onMessageReceived("/help", user, botLogic);
+        String HELP_INFO = """
+            Бот для обучения. Ты можешь проходить здесь тесты и проверять свой скилл.
+            Просто используй:
+            /start - для запуска бота
+            /help - если тебе вдруг что-то стало непонятно
+            /test - для запуска теста
+            /stop - для завершения работы в режиме теста
+            /notify - отправить уведомление с текстом <text> через <seconds> секунд
+            /repeat - повторно задать вопросы, на которые был дан неправильный ответ (как только дан правильный ответ, вопрос удаляется списка на повторение)""";
+
 
         Assertions.assertEquals(HELP_INFO, bot.getMessageList().getLast());
     }
