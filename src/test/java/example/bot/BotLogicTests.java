@@ -120,6 +120,7 @@ public class BotLogicTests {
         bot.onMessageReceived("1");
 
         Assertions.assertEquals(State.INIT, bot.getUser().getState());
+        Assertions.assertNotEquals("Сработало напоминание: 'Написать тесты'", bot.getChat().getLast());
 
         Thread.sleep(1020);
 
