@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Тестовая реализация бота для тестирования класса BotLogic
+ * Тестовый бот для отслеживания отправляемых сообщений, обрабатываемых классом BotLogic
  */
 public class TestBot implements Bot {
 
