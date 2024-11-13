@@ -24,9 +24,9 @@ public class BotLogicTests {
      */
     @Test
     public void testCommand_Start() {
-        bot.onMessageReceived("/start", user, botLogic);
+        botLogic.processCommand(user, "/start");
 
-        Assertions.assertEquals("Привет!", bot.getMessageList().getLast());
+        Assertions.assertEquals("Привет!", bot.getLastMessage());
         Assertions.assertEquals(State.INIT, user.getState());
     }
 
@@ -35,19 +35,19 @@ public class BotLogicTests {
      */
     @Test
     public void testCommand_Help() {
-        bot.onMessageReceived("/help", user, botLogic);
+        botLogic.processCommand(user, "/help");
         String HELP_INFO = """
-            Бот для обучения. Ты можешь проходить здесь тесты и проверять свой скилл.
-            Просто используй:
-            /start - для запуска бота
-            /help - если тебе вдруг что-то стало непонятно
-            /test - для запуска теста
-            /stop - для завершения работы в режиме теста
-            /notify - отправить уведомление с текстом <text> через <seconds> секунд
-            /repeat - повторно задать вопросы, на которые был дан неправильный ответ (как только дан правильный ответ, вопрос удаляется списка на повторение)""";
+                Бот для обучения. Ты можешь проходить здесь тесты и проверять свой скилл.
+                Просто используй:
+                /start - для запуска бота
+                /help - если тебе вдруг что-то стало непонятно
+                /test - для запуска теста
+                /stop - для завершения работы в режиме теста
+                /notify - отправить уведомление с текстом <text> через <seconds> секунд
+                /repeat - повторно задать вопросы, на которые был дан неправильный ответ (как только дан правильный ответ, вопрос удаляется списка на повторение)""";
 
 
-        Assertions.assertEquals(HELP_INFO, bot.getMessageList().getLast());
+        Assertions.assertEquals(HELP_INFO, bot.getLastMessage());
     }
 
     /**
@@ -56,21 +56,21 @@ public class BotLogicTests {
      */
     @Test
     public void testCommand_Test() {
-        bot.onMessageReceived("/test", user, botLogic);
+        botLogic.processCommand(user, "/test");
 
         Assertions.assertEquals(State.TEST, user.getState());
-        Assertions.assertEquals("Вычислите степень: 10^2", bot.getMessageList().getLast());
+        Assertions.assertEquals("Вычислите степень: 10^2", bot.getLastMessage());
 
-        bot.onMessageReceived("90", user, botLogic);
+        botLogic.processCommand(user, "90");
 
-        Assertions.assertEquals("Вы ошиблись, верный ответ: 100", bot.getMessageList().get(bot.getMessageList().size() - 2));
+        Assertions.assertEquals("Вы ошиблись, верный ответ: 100", bot.getMessageFromEnd(2));
         Assertions.assertEquals("Вычислите степень: 10^2", user.getCurrentWrongAnswerQuestion().get().text());
-        Assertions.assertEquals("Сколько будет 2 + 2 * 2", bot.getMessageList().getLast());
+        Assertions.assertEquals("Сколько будет 2 + 2 * 2", bot.getLastMessage());
 
-        bot.onMessageReceived("6", user, botLogic);
+        botLogic.processCommand(user, "6");
 
-        Assertions.assertEquals("Правильный ответ!", bot.getMessageList().get(bot.getMessageList().size() - 2));
-        Assertions.assertEquals("Тест завершен", bot.getMessageList().getLast());
+        Assertions.assertEquals("Правильный ответ!", bot.getMessageFromEnd(2));
+        Assertions.assertEquals("Тест завершен", bot.getLastMessage());
     }
 
     /**
@@ -78,15 +78,15 @@ public class BotLogicTests {
      */
     @Test
     public void testCommand_Stop() {
-        bot.onMessageReceived("/stop", user, botLogic);
+        botLogic.processCommand(user, "/stop");
 
         Assertions.assertEquals("Вы не начинали тестирование. Воспользуйтесь командой /help, чтобы прочитать инструкцию.",
-                bot.getMessageList().getLast());
+                bot.getLastMessage());
 
-        bot.onMessageReceived("/test", user, botLogic);
-        bot.onMessageReceived("/stop", user, botLogic);
+        botLogic.processCommand(user, "/test");
+        botLogic.processCommand(user, "/stop");
 
-        Assertions.assertEquals(bot.getMessageList().getLast(), "Тест завершен");
+        Assertions.assertEquals("Тест завершен", bot.getLastMessage());
         Assertions.assertEquals(State.INIT, user.getState());
     }
 
@@ -96,27 +96,26 @@ public class BotLogicTests {
      */
     @Test
     public void testCommand_Repeat() {
-        bot.onMessageReceived("/test", user, botLogic);
-        bot.onMessageReceived("100", user, botLogic);
-        bot.onMessageReceived("/repeat", user, botLogic);
+        botLogic.processCommand(user, "/test");
+        botLogic.processCommand(user, "100");
+        botLogic.processCommand(user, "/repeat");
 
-        Assertions.assertEquals("Нет вопросов для повторения", bot.getMessageList().getLast());
+        Assertions.assertEquals("Нет вопросов для повторения", bot.getLastMessage());
 
-        bot.onMessageReceived("/test", user, botLogic);
-        bot.onMessageReceived("90", user, botLogic);
-        bot.onMessageReceived("/repeat", user, botLogic);
+        botLogic.processCommand(user, "8");
+        botLogic.processCommand(user, "/repeat");
 
         Assertions.assertEquals(State.REPEAT, user.getState());
-        Assertions.assertEquals("Вычислите степень: 10^2", bot.getMessageList().getLast());
+        Assertions.assertEquals("Сколько будет 2 + 2 * 2", bot.getLastMessage());
 
-        bot.onMessageReceived("100", user, botLogic);
+        botLogic.processCommand(user, "6");
 
-        Assertions.assertEquals("Правильный ответ!", bot.getMessageList().get(bot.getMessageList().size() - 2));
-        Assertions.assertEquals("Тест завершен", bot.getMessageList().getLast());
+        Assertions.assertEquals("Правильный ответ!", bot.getMessageFromEnd(2));
+        Assertions.assertEquals("Тест завершен", bot.getLastMessage());
 
-        bot.onMessageReceived("/repeat", user, botLogic);
+        botLogic.processCommand(user, "/repeat");
 
-        Assertions.assertEquals("Нет вопросов для повторения", bot.getMessageList().getLast());
+        Assertions.assertEquals("Нет вопросов для повторения", bot.getLastMessage());
     }
 
     /**
@@ -124,24 +123,24 @@ public class BotLogicTests {
      */
     @Test
     public void testCommand_Notify() throws InterruptedException {
-        bot.onMessageReceived("/notify", user, botLogic);
+        botLogic.processCommand(user, "/notify");
 
         Assertions.assertEquals(State.SET_NOTIFY_TEXT, user.getState());
-        Assertions.assertEquals("Введите текст напоминания", bot.getMessageList().getLast());
+        Assertions.assertEquals("Введите текст напоминания", bot.getLastMessage());
 
-        bot.onMessageReceived("Написать тесты", user, botLogic);
+        botLogic.processCommand(user, "Написать тесты");
 
         Assertions.assertEquals(State.SET_NOTIFY_DELAY, user.getState());
-        Assertions.assertEquals("Через сколько секунд напомнить?", bot.getMessageList().getLast());
+        Assertions.assertEquals("Через сколько секунд напомнить?", bot.getLastMessage());
 
-        bot.onMessageReceived("1", user, botLogic);
+        botLogic.processCommand(user, "1");
 
         Assertions.assertEquals(State.INIT, user.getState());
-        Assertions.assertNotEquals("Сработало напоминание: 'Написать тесты'", bot.getMessageList().getLast());
+        Assertions.assertNotEquals("Сработало напоминание: 'Написать тесты'", bot.getLastMessage());
 
         Thread.sleep(1020);
 
-        Assertions.assertEquals("Сработало напоминание: 'Написать тесты'", bot.getMessageList().getLast());
+        Assertions.assertEquals("Сработало напоминание: 'Написать тесты'", bot.getLastMessage());
     }
 
     /**
@@ -149,9 +148,9 @@ public class BotLogicTests {
      */
     @Test
     public void testUnprocessableCommand() {
-        bot.onMessageReceived("/unprocessable", user, botLogic);
+        botLogic.processCommand(user, "/unprocessable");
 
         Assertions.assertEquals("Такой команды пока не существует, или Вы допустили ошибку в написании. Воспользуйтесь командой /help, чтобы прочитать инструкцию.",
-                bot.getMessageList().getLast());
+                bot.getLastMessage());
     }
 }

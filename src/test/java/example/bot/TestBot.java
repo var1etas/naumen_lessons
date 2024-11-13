@@ -19,16 +19,16 @@ public class TestBot implements Bot {
     }
 
     /**
-     * Обработка входящих сообщений с помощью BotLogic().processCommand()
+     * Возвращает список с сообщениями чата
      */
-    public void onMessageReceived(String message, User user, BotLogic botLogic) {
-        botLogic.processCommand(user, message);
+    public String getLastMessage() {
+        return messageList.getLast();
     }
 
     /**
-     * Возвращает список с сообщениями чата
+     * Возвращает сообщение с заданными индексом с конца
      */
-    public List<String> getMessageList() {
-        return messageList;
+    public String getMessageFromEnd(int indexFromEnd) {
+        return messageList.get(messageList.size() - indexFromEnd);
     }
 }
