@@ -31,4 +31,11 @@ public class TestBot implements Bot {
     public String getMessageFromEnd(int indexFromEnd) {
         return messageList.get(messageList.size() - indexFromEnd);
     }
+
+    /**
+     * Возвращает кол-во сообщений в переписке
+     */
+    public int getMessageCount() {
+        return messageList.size();
+    }
 }

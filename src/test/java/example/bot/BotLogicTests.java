@@ -110,10 +110,11 @@ public class BotLogicTests {
 
         botLogic.processCommand(user, "1");
 
-        Assertions.assertFalse(bot.getLastMessage().contains("Написать тесты"));
+        Assertions.assertEquals(3, bot.getMessageCount());
 
         Thread.sleep(1020);
 
+        Assertions.assertEquals(4, bot.getMessageCount());
         Assertions.assertEquals("Сработало напоминание: 'Написать тесты'", bot.getLastMessage());
     }
 
