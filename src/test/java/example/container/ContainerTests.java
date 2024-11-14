@@ -21,8 +21,8 @@ public class ContainerTests {
     @Test
     public void addTest_Success(){
         Item item = new Item(1);
-        container.add(item);
 
+        Assertions.assertTrue(container.add(item));
         Assertions.assertTrue(container.contains(item));
         Assertions.assertEquals(1, container.size());
     }
@@ -34,8 +34,8 @@ public class ContainerTests {
     public void removeTest_Success(){
         Item item = new Item(1);
         container.add(item);
-        container.remove(item);
 
+        Assertions.assertTrue(container.remove(item));
         Assertions.assertFalse(container.contains(item));
         Assertions.assertEquals(0, container.size());
     }
