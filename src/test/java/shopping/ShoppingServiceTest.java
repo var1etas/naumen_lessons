@@ -21,6 +21,9 @@ public class ShoppingServiceTest {
     private Customer customer;
     private Cart cart;
 
+    /**
+     * Перед каждым тестом создаются тестовые покупатель, продукт и корзина
+     */
     @BeforeEach
     public void setUp() {
         customer = new Customer(1, "+780005553535");
