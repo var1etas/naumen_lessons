@@ -89,8 +89,9 @@ public class ShoppingServiceTest {
 
         Assertions.assertTrue(shoppingService.buy(cart));
         Assertions.assertTrue(shoppingService.buy(cart));
-        Assertions.assertThrows(BuyException.class, () -> shoppingService.buy(cart),
-                "В наличии нет необходимого количества товара " + product.getName());
+        BuyException exception = Assertions.assertThrows(BuyException.class, () -> shoppingService.buy(cart));
+        Assertions.assertEquals("В наличии нет необходимого количества товара " + "'"
+                + product.getName() + "'", exception.getMessage());
 
         Mockito.verify(productDao, Mockito.times(2)).save(product);
     }
