@@ -41,7 +41,7 @@ public class ShoppingServiceTest {
         Cart customerCart = shoppingService.getCart(customer);
 
         Assertions.assertTrue(customerCart.getProducts().containsKey(product));
-        Assertions.assertEquals(cart.getProducts().size(), customerCart.getProducts().size());
+        Assertions.assertEquals(cart.getProducts(), customerCart.getProducts());
     }
 
     /**
@@ -49,6 +49,7 @@ public class ShoppingServiceTest {
      */
     @Test
     public void getAllProductsTest_Success(){
+        // Нет смысла тестировать т.к. внутри просто вызывается метод класса ProductDao
     }
 
     /**
@@ -56,6 +57,7 @@ public class ShoppingServiceTest {
      */
     @Test
     public void getProductByNameTest(){
+        // Нет смысла тестировать т.к. внутри просто вызывается метод класса ProductDao
     }
 
     /**
@@ -63,19 +65,28 @@ public class ShoppingServiceTest {
      */
     @Test
     public void buyProductTest_Success() throws BuyException {
+        Product secondProduct = new Product("bread", 2);
         cart.add(product, 1);
+        cart.add(secondProduct, 2);
 
         Assertions.assertTrue(shoppingService.buy(cart));
+
+        Assertions.assertEquals(1, product.getCount());
+        Assertions.assertEquals(0, secondProduct.getCount());
+
+        Assertions.assertTrue(cart.getProducts().isEmpty());
         Mockito.verify(productDao, Mockito.times(1)).save(product);
+        Mockito.verify(productDao, Mockito.times(1)).save(secondProduct);
     }
 
     /**
-     * Тест покупки продуктов, которых нет в корзине - покупка не состоится
+     * Тест покупки пустой корзины - покупка не состоится
      */
     @Test
     public void buyProductTest_EmptyCart() throws BuyException {
-        Assertions.assertTrue(cart.getProducts().isEmpty());
-        Assertions.assertEquals(2, product.getCount());
+        Cart emptyCart = new Cart(customer);
+
+        Assertions.assertTrue(emptyCart.getProducts().isEmpty());
         Assertions.assertFalse(shoppingService.buy(cart));
     }
 
@@ -84,53 +95,43 @@ public class ShoppingServiceTest {
      */
     @Test
     public void buyProductTest_BuyException() throws BuyException {
-        cart.add(product, 1);
-        cart.add(product, 1);
-
-        Assertions.assertTrue(shoppingService.buy(cart));
-        Assertions.assertTrue(shoppingService.buy(cart));
-        BuyException exception = Assertions.assertThrows(BuyException.class, () -> shoppingService.buy(cart));
+        Customer customer1 = new Customer(1L, "911");
+        Customer customer2 = new Customer(2L, "992");
+        Cart cart1 = new Cart(customer1);
+        Cart cart2 = new Cart(customer2);
+        cart1.add(product, 1);
+        cart2.add(product, 2);
+        shoppingService.buy(cart1);
+        BuyException exception = Assertions.assertThrows(BuyException.class, () -> shoppingService.buy(cart2));
         Assertions.assertEquals("В наличии нет необходимого количества товара " + "'"
                 + product.getName() + "'", exception.getMessage());
 
-        Mockito.verify(productDao, Mockito.times(2)).save(product);
-    }
-
-    /**
-     * Тест на отсутствие товаров в корзине, если товары уже купили
-     */
-    @Test
-    public void buyProductTest_CartProducts() throws BuyException {
-        Assertions.assertTrue(cart.getProducts().isEmpty());
-        cart.add(product, 1);
-        Assertions.assertEquals(1, cart.getProducts().size());
-        shoppingService.buy(cart);
-        Assertions.assertEquals(0, cart.getProducts().size());
-    }
-
-    /**
-     * Тест на уменьшение кол-ва товаров в корзине после покупки
-     */
-    @Test
-    public void buyProductTest_ProductCount() throws BuyException {
-        Assertions.assertTrue(cart.getProducts().isEmpty());
-        cart.add(product, 1);
-        Assertions.assertEquals(1, cart.getProducts().get(product));
-        shoppingService.buy(cart);
-        Assertions.assertEquals(0, cart.getProducts().get(product));
+        Mockito.verify(productDao, Mockito.times(1)).save(product);
     }
 
     /**
      * Тест на покупку отрицательного кол-ва продуктов
      */
     @Test
-    public void buyProductTest_BadIncrease() throws BuyException {
-        Assertions.assertEquals(2, product.getCount());
-
+    public void buyProductTest_BadDecrease() throws BuyException {
         cart.add(product, -3);
-        shoppingService.buy(cart);
 
+        Assertions.assertFalse(shoppingService.buy(cart));
         Assertions.assertEquals(2, product.getCount());
+    }
+
+    /**
+     * Тест покупки последнего товара и добавления в корзину большего кол-ва товаров, чем есть в магазине
+     */
+    @Test
+    public void cartAddTest() {
+        Product cartTestProduct = new Product("cheese", 1);
+        cart.add(cartTestProduct, 1);
+
+        Exception exception = Assertions.assertThrows(IllegalArgumentException.class, ()-> cart.add(cartTestProduct, 2));
+        Assertions.assertEquals("Невозможно добавить товар " + product.getName()
+                + " в корзину, т.к. нет необходимого количества товаров", exception.getMessage());
+        Assertions.assertEquals(1, cart.getProducts().get(cartTestProduct));
     }
 }
 
