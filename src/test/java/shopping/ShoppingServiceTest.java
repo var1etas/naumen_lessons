@@ -127,6 +127,7 @@ public class ShoppingServiceTest {
         Product cartTestProduct = new Product("cheese", 1);
         cart.add(cartTestProduct, 1);
 
+        Assertions.assertTrue(cart.getProducts().containsKey(cartTestProduct));
         Exception exception = Assertions.assertThrows(IllegalArgumentException.class,
                 ()-> cart.add(cartTestProduct, 1));
         Assertions.assertEquals("Невозможно добавить товар " + product.getName()
