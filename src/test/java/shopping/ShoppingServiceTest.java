@@ -86,8 +86,7 @@ public class ShoppingServiceTest {
     public void buyProductTest_EmptyCart() throws BuyException {
         Cart emptyCart = new Cart(customer);
 
-        Assertions.assertTrue(emptyCart.getProducts().isEmpty());
-        Assertions.assertFalse(shoppingService.buy(cart));
+        Assertions.assertFalse(shoppingService.buy(emptyCart));
     }
 
     /**
@@ -128,7 +127,8 @@ public class ShoppingServiceTest {
         Product cartTestProduct = new Product("cheese", 1);
         cart.add(cartTestProduct, 1);
 
-        Exception exception = Assertions.assertThrows(IllegalArgumentException.class, ()-> cart.add(cartTestProduct, 2));
+        Exception exception = Assertions.assertThrows(IllegalArgumentException.class,
+                ()-> cart.add(cartTestProduct, 1));
         Assertions.assertEquals("Невозможно добавить товар " + product.getName()
                 + " в корзину, т.к. нет необходимого количества товаров", exception.getMessage());
         Assertions.assertEquals(1, cart.getProducts().get(cartTestProduct));
